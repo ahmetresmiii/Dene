@@ -1,0 +1,407 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Yılı İlköğretim ve Ortaöğretim Kurumları Bursluluk Sınavı İOKBS Sonuç Bilgisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Genel Stil Ayarları */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background-color: #fcfcfc;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 15px;
+        }
+
+        /* Konteyner Alanı */
+        .container {
+            width: 100%;
+            max-width: 750px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* SADE GİRİŞ EKRANI TASARIMI */
+        .minimal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .minimal-header h1 {
+            font-size: 16px;
+            color: #111;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+        }
+
+        /* Form Elemanları */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 12.5px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 13.5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            outline: none;
+            background-color: #fafafa;
+        }
+        .form-group input:focus {
+            border-color: #666;
+            background-color: #fff;
+        }
+
+        /* Sade Güvenlik Kodu Alanı */
+        .captcha-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 5px;
+        }
+        .captcha-display {
+            background-color: #f0f0f0;
+            padding: 8px 16px;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 3px;
+            color: #222;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            user-select: none;
+        }
+        .btn-refresh {
+            background: none;
+            border: none;
+            color: #0066cc;
+            font-size: 11.5px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        /* map_submit */
+        .btn-submit {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 3px;
+            width: 100%;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .btn-submit:hover {
+            background-color: #111;
+        }
+
+        /* --- SONUÇ EKRANI (GÖRSELDEKİ BİREBİR YAPI) --- */
+        .result-title {
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Tablo Tasarımları */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+        .result-table th, .result-table td {
+            border: 1px solid #c0c0c0;
+            padding: 6px 10px;
+            text-align: left;
+        }
+        
+        /* Öğrenci Bilgileri Tablosu */
+        .student-table td:first-child {
+            font-weight: bold;
+            width: 25%;
+            background-color: #fcfcfc;
+        }
+        .student-table td:last-child {
+            width: 75%;
+            color: #000;
+        }
+
+        /* Sınav Sonuç Tablosu */
+        .score-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+            color: #000;
+            font-size: 13px;
+            padding: 8px;
+        }
+        .score-table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 8px;
+            color: #000;
+            font-size: 13px;
+        }
+
+        /* Alt Linkler */
+        .action-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+        .link-item {
+            color: #1a0dab;
+            text-decoration: underline;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .link-item:hover {
+            color: #d32f2f;
+        }
+
+        /* Gizleme Sınıfı */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Yazıcı İkonu SVG */
+        .print-icon {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+        }
+
+        /* Mobil Uyum */
+        @media (max-width: 600px) {
+            .result-table {
+                font-size: 11px;
+            }
+            .result-table th, .result-table td {
+                padding: 5px 6px;
+            }
+            .result-title {
+                font-size: 13px;
+            }
+            .student-table td:first-child {
+                width: 35%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SADE GİRİŞ EKRANI -->
+    <div id="search-screen" class="container" style="max-width: 450px;">
+        <div class="minimal-header">
+            <h1>İOKBS Sonuç Sorgulama</h1>
+        </div>
+
+        <form id="search-form" onsubmit="handleSearch(event)">
+            <div class="form-group">
+                <label for="tc_no">T.C. Kimlik Numarası</label>
+                <input type="text" id="tc_no" maxlength="11" pattern="\d{11}" placeholder="11 haneli T.C. numaranız" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birth_date">Doğum Tarihi</label>
+                <input type="text" id="birth_date" placeholder="GG.AA.YYYY" required>
+            </div>
+
+            <div class="form-group">
+                <label for="captcha_input">Güvenlik Kodu</label>
+                <div class="captcha-row">
+                    <div id="captcha-code" class="captcha-display">7249</div>
+                    <button type="button" class="btn-refresh" onclick="generateCaptcha()">Yenile</button>
+                </div>
+                <input type="text" id="captcha_input" style="margin-top: 8px;" placeholder="Kodu buraya giriniz" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Sorgula</button>
+        </form>
+    </div>
+
+    <!-- BİREBİR SONUÇ BELGESİ EKRANI -->
+    <div id="result-screen" class="container hidden">
+        
+        <div class="result-title">
+            2026 Yılı İlköğretim ve Ortaöğretim Kurumları Bursluluk Sınavı İOKBS<br>Sonuç Belgesi
+        </div>
+
+        <!-- Öğrenci Bilgileri -->
+        <table class="result-table student-table">
+            <tr>
+                <td>T.C. Kimlik No</td>
+                <td id="res-tc">************</td>
+            </tr>
+            <tr>
+                <td>Adı</td>
+                <td id="res-name">AHMET MESRUR</td>
+            </tr>
+            <tr>
+                <td>Soyadı</td>
+                <td id="res-surname">ŞAHİN</td>
+            </tr>
+            <tr>
+                <td>Sınıfı</td>
+                <td id="res-class">7</td>
+            </tr>
+            <tr>
+                <td>Doğum Tarihi</td>
+                <td id="res-birth">************</td>
+            </tr>
+        </table>
+
+        <!-- Kontenjan ve Puan Bilgisi -->
+        <table class="result-table score-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Kontenjan Durumu</th>
+                    <th style="width: 20%;">Açıklama</th>
+                    <th style="width: 25%;">İOKBS Puanı</th>
+                    <th style="width: 25%;">Sonuç</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="res-quota" style="text-align: center;">Diğer Kontenjan</td>
+                    <td id="res-desc">GİRDİ</td>
+                    <td id="res-score">432,815</td>
+                    <td id="res-outcome">KAZANAMADI</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Aksiyon Linkleri -->
+        <div class="action-links">
+            <div class="link-item" onclick="window.print()">
+                <svg class="print-icon" viewBox="0 0 24 24" fill="none" stroke="#1a0dab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                Yazdır
+            </div>
+            
+            <div class="link-item" onclick="showSearchScreen()">Yeni Sorgu</div>
+            
+            <div class="link-item" onclick="alert('Anket yönlendirmesi simüle edildi.')">2026 Aday Memnuniyet Anketi</div>
+        </div>
+
+    </div>
+
+    <script>
+        // Değiştirilebilir statik öğrenci verileri
+        const ogrenciVerisi = {
+            adi: "AHMET MESRUR",
+            soyadi: "ŞAHİN",
+            sinif: "7",
+            kontenjan: "Diğer Kontenjan",
+            aciklama: "GİRDİ",
+            puan: "432,815",
+            sonuc: "KAZANAMADI"
+        };
+
+        window.onload = function() {
+            generateCaptcha();
+        }
+
+        // 4 haneli güvenlik kodu oluşturucu
+        function generateCaptcha() {
+            const code = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('captcha-code').textContent = code;
+            document.getElementById('captcha_input').value = "";
+        }
+
+        // Form sorgulama tetikleyici
+        function handleSearch(event) {
+            event.preventDefault();
+
+            const tcNo = document.getElementById('tc_no').value;
+            const birthDate = document.getElementById('birth_date').value;
+            const captchaInput = document.getElementById('captcha_input').value;
+            const captchaCode = document.getElementById('captcha-code').textContent;
+
+            if (captchaInput !== captchaCode) {
+                alert("Girdiğiniz güvenlik kodu hatalıdır. Lütfen tekrar deneyiniz.");
+                generateCaptcha();
+                return;
+            }
+
+            // T.C. Maskeleme (Örn: 123******89)
+            let maskedTc = tcNo;
+            if(tcNo.length === 11) {
+                maskedTc = tcNo.substring(0, 3) + "******" + tcNo.substring(9, 11);
+            }
+
+            // Doğum Tarihi Maskeleme
+            let maskedBirth = birthDate;
+            if(birthDate.length >= 10) {
+                maskedBirth = birthDate.substring(0, 2) + "." + "**.****";
+            }
+
+            // Tabloyu verilerle dolduruyoruz
+            document.getElementById('res-tc').textContent = maskedTc;
+            document.getElementById('res-birth').textContent = maskedBirth;
+            document.getElementById('res-name').textContent = ogrenciVerisi.adi;
+            document.getElementById('res-surname').textContent = ogrenciVerisi.soyadi;
+            document.getElementById('res-class').textContent = ogrenciVerisi.sinif;
+            document.getElementById('res-quota').textContent = ogrenciVerisi.kontenjan;
+            document.getElementById('res-desc').textContent = ogrenciVerisi.aciklama;
+            document.getElementById('res-score').textContent = ogrenciVerisi.puan;
+            document.getElementById('res-outcome').textContent = ogrenciVerisi.sonuc;
+
+            // Ekranları değiştirme
+            document.getElementById('search-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+        }
+
+        // Yeni sorguya dönme fonksiyonu
+        function showSearchScreen() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('search-screen').classList.remove('hidden');
+            document.getElementById('tc_no').value = "";
+            document.getElementById('birth_date').value = "";
+            document.getElementById('captcha_input').value = "";
+            generateCaptcha();
+        }
+    </script>
+</body>
+</html>
+
+```
